@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
+#O projeto ainda está em andamento, apenas algumas informações foram extraidas para compreender melhor a base que será trabalhada
+#Serão incluídas ainda outras bases para dar suporte ao trabalho que será realizado
+#Serão utilizadas técnicas de machine learning para tirar insights mais conclusivos
 
 
 import pandas as pd
@@ -10,57 +9,36 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #Health Nutrition And Population Statistics
-
+#Abrindo o arquivo CSV
 dados = pd.read_csv("HNP_StatsData.csv", sep = ',')
 dados.info()
 
-
-# In[2]:
-
-
+#Primeiro contato com os dados
 dados.head()
 
-
-# In[3]:
-
-
+#Criando um gráfico para analisar dados faltantes
 df = sns.set(rc={'figure.figsize': (35,15)})
 df = sns.heatmap(dados.isna(), cbar = False)
 df = plt.subplots_adjust(bottom=0.25, top=.9)
 df
 
-
-# In[4]:
-
-
+#Visualizando indicadores
 indicadores_unicos = dados["Indicator Name"].unique()
 indicadores_unicos
 
-
-# In[5]:
-
-
+#Contando quantos indicadores únicos o DF possui
 contagem_indicadores = len(indicadores_unicos)
 contagem_indicadores
 
-
-# In[6]:
-
-
+#Visualizando países e macroregiões presentes no DF
 paises_unicos = dados["Country Name"].unique()
 paises_unicos
 
-
-# In[7]:
-
-
+#Contando quantos países e macroregiões únicas o DF possui
 contagem_paises = len(paises_unicos)
 contagem_paises
 
-
-# In[8]:
-
-
+#Selecionando os indicadores que serão analisados
 selecao_geral = [
 "Birth rate, crude (per 1,000 people)",#taxa de natalidade por 1000 habitantes
 "Current health expenditure (% of GDP)",#estima a quantidade de dinheiro gasta pelo pais
@@ -93,215 +71,135 @@ selecao_geral = [
 "Prevalence of HIV, total (% of population ages 15-49)"
 ]
 
+# Criando BD para o ano de 2019
 
-# In[9]:
+paises = dados["Country Name"].unique()
+relatorio = list()
+for pais in paises:
+   linha_relatorio = [pais]
+   for indicador in selecao_geral:
+       df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
+       valor = df_temp.iloc[0]["2019"]
+       linha_relatorio.append(valor)
+   relatorio.append(linha_relatorio)
 
+#Salvando BD para o ano de 2019
 
-# Criando BD para 2019
+colunas = ["Pais"]
+colunas.extend(selecao_geral)
+df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
+df_ind_2019.head()
+df_ind_2019.to_excel("Dados_2019.xlsx")
 
-#paises = dados["Country Name"].unique()
-#relatorio = list()
-#for pais in paises:
-#    linha_relatorio = [pais]
-#    for indicador in selecao_geral:
-#        df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
-#        valor = df_temp.iloc[0]["2019"]
-#        linha_relatorio.append(valor)
-#    relatorio.append(linha_relatorio)
-
-
-# In[10]:
-
-
-#Salvando BD de 2019
-
-#colunas = ["Pais"]
-#colunas.extend(selecao_geral)
-#df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
-#df_ind_2019.head()
-#df_ind_2019.to_excel("Dados_2019.xlsx")
-
-
-# In[11]:
-
-
+#checando informações para a base de dados criada
 df_ind_2019.head()
 
 
-# In[12]:
+# Criando BD para o ano de 2020
 
+paises = dados["Country Name"].unique()
+relatorio = list()
+for pais in paises:
+   linha_relatorio = [pais]
+   for indicador in selecao_geral:
+       df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
+       valor = df_temp.iloc[0]["2020"]
+       linha_relatorio.append(valor)
+   relatorio.append(linha_relatorio)
 
-#df_temp = dados[dados["Indicator Name"] == "Community health workers (per 1,000 people)"]
+#Salvando BD para o ano de 2020
 
-
-# In[13]:
-
-
-#df_temp.info()
-
-
-# In[14]:
-
-
-# Criando BD para 2020
-
-#paises = dados["Country Name"].unique()
-#relatorio = list()
-#for pais in paises:
-#    linha_relatorio = [pais]
-#    for indicador in selecao_geral:
-#        df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
-#        valor = df_temp.iloc[0]["2020"]
-#        linha_relatorio.append(valor)
-#    relatorio.append(linha_relatorio)
-    
-
-
-# In[15]:
-
-
-#Salvando BD de 2020
-
-#colunas = ["Pais"]
-#colunas.extend(selecao_geral)
-#df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
-#df_ind_2019.head()
-#df_ind_2019.to_excel("Dados_2020.xlsx")
-
-
-# In[16]:
+colunas = ["Pais"]
+colunas.extend(selecao_geral)
+df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
+df_ind_2019.head()
+df_ind_2019.to_excel("Dados_2020.xlsx")
 
 
 #Criando BD para 2021
 
-#paises = dados["Country Name"].unique()
-#relatorio = list()
-#for pais in paises:
-#    linha_relatorio = [pais]
-#    for indicador in selecao_geral:
-#        df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
-#        valor = df_temp.iloc[0]["2021"]
-#        linha_relatorio.append(valor)
-#    relatorio.append(linha_relatorio)
-
-
-# In[17]:
+paises = dados["Country Name"].unique()
+relatorio = list()
+for pais in paises:
+   linha_relatorio = [pais]
+   for indicador in selecao_geral:
+       df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
+       valor = df_temp.iloc[0]["2021"]
+       linha_relatorio.append(valor)
+   relatorio.append(linha_relatorio)
 
 
 #Salvando BD de 2021
 
-#colunas = ["Pais"]
-#colunas.extend(selecao_geral)
-#df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
-#df_ind_2019.head()
-#df_ind_2019.to_excel("Dados_2021.xlsx")
-
-
-# In[18]:
-
+colunas = ["Pais"]
+colunas.extend(selecao_geral)
+df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
+df_ind_2019.head()
+df_ind_2019.to_excel("Dados_2021.xlsx")
 
 #Criando BD para 2022
 
-#paises = dados["Country Name"].unique()
-#relatorio = list()
-#for pais in paises:
-#    linha_relatorio = [pais]
-#    for indicador in selecao_geral:
-#        df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
-#        valor = df_temp.iloc[0]["2022"]
-#        linha_relatorio.append(valor)
-#    relatorio.append(linha_relatorio)
-
-
-# In[19]:
+paises = dados["Country Name"].unique()
+relatorio = list()
+for pais in paises:
+   linha_relatorio = [pais]
+   for indicador in selecao_geral:
+       df_temp = dados[(dados["Country Name"] == pais) & (dados["Indicator Name"] == indicador)]
+       valor = df_temp.iloc[0]["2022"]
+       linha_relatorio.append(valor)
+   relatorio.append(linha_relatorio)
 
 
 #Salvando BD de 2022
 
-#colunas = ["Pais"]
-#colunas.extend(selecao_geral)
-#df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
-#df_ind_2019.head()
-#df_ind_2019.to_excel("Dados_2022.xlsx")
+colunas = ["Pais"]
+colunas.extend(selecao_geral)
+df_ind_2019 = pd.DataFrame(relatorio, columns=colunas)
+df_ind_2019.head()
+df_ind_2019.to_excel("Dados_2022.xlsx")
 
-
-# In[20]:
-
-
+#Descrevendo informações da base de dados de 2019
 df_2019 = pd.read_excel("Dados_2019.xlsx")
 df_2019.info()
-#PCA (analise de componentes principais)
 
-
-# In[21]:
-
-
+#Limpando dados do DF de 2019
 df_2019_limpa = df_2019.drop(columns=["Unnamed: 0"])
 df_2019_limpa.head()
 
-
-# In[22]:
-
-
+#Descrevendo informações da base de dados de 2020
 df_2020 = pd.read_excel("Dados_2020.xlsx")
 df_2020.info()
 
-
-# In[23]:
-
-
+#Limpando dados do DF de 2020
 df_2020_limpa = df_2020.drop(columns=["Unnamed: 0"])
 df_2020_limpa.head()
 
-
-# In[24]:
-
-
+#Descrevendo informações da base de dados de 2021
 df_2021 = pd.read_excel("Dados_2021.xlsx")
 df_2021.info()
 
-
-# In[25]:
-
-
+#Limpando dados do DF de 2021
 df_2021_limpa = df_2021.drop(columns=["Unnamed: 0"])
 df_2021_limpa.head()
 
-
-# In[26]:
-
-
+#Descrevendo informações da base de dados de 2022
 df_2022 = pd.read_excel("Dados_2022.xlsx")
 df_2022.info()
 
-
-# In[27]:
-
-
+#Limpando dados do DF de 2022
 df_2022_limpa = df_2022.drop(columns=["Unnamed: 0"])
 df_2022_limpa.head()
 
-
-# In[28]:
-
-
+#Analisando parâmetros da base de 2019
+#Foi escolhida essa base por possuir o maior numero de valores relevantes
 df_2019_limpa.describe().round(3)
 
-
-# In[29]:
-
-
+#Fazendo a correlação entre os indicadores seleciondos
 correlacoes = df_2019_limpa.corr()
 
+#Plotando o Gráfico de correlação entre as varáveis
 sns.set(style="white")
 plt.figure(figsize=(40, 30))
 sns.heatmap(correlacoes, annot=True, cmap='coolwarm', linewidths=.5)
 
 plt.show()
-
-
-# In[ ]:
-
-
-
-
